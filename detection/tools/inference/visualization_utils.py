@@ -33,8 +33,10 @@ def draw_bboxes(image_path, bboxes, scores, score_thresh, save_path=None, linewi
     ax.imshow(image)
 
     # Loop through each bbox and score
+    pig_count = 0
     for bbox, score in zip(bboxes, scores):
         if score >= score_thresh:
+            pig_count += 1
             # Create a Rectangle patch with random color
             rect = patches.Rectangle((bbox[0], bbox[1]), bbox[2] - bbox[0], bbox[3] - bbox[1], linewidth=linewidth,
                                      edgecolor=np.random.rand(3,), facecolor='none')
@@ -42,6 +44,12 @@ def draw_bboxes(image_path, bboxes, scores, score_thresh, save_path=None, linewi
             if show_scores:
                 ax.text(bbox[0], bbox[1], f"{score:.2f}", color='white', fontsize=score_fontsize, ha='left', va='top',
                         bbox=dict(facecolor='black', alpha=0.5, edgecolor='none'))
+
+    # Display total pig count on the image
+    count_fontsize = max(score_fontsize * 2, 14)
+    ax.text(10, 10, f"Total pigs: {pig_count}", color='white', fontsize=count_fontsize,
+            ha='left', va='top', fontweight='bold',
+            bbox=dict(facecolor='black', alpha=0.7, edgecolor='none', boxstyle='round,pad=0.3'))
 
     plt.axis('off')  # Turn off axis numbers and ticks
 
