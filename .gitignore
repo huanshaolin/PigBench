@@ -19,6 +19,9 @@ tracking/boxmot/outputs
 **/outputs/
 **/outputs_scratch/
 
+################ API
+api/.env
+
 ################ General
 **/__pycache__/
 **.pth
