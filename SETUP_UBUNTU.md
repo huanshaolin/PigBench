@@ -161,7 +161,7 @@ detection/data/pretrained_weights/codino_swin.pth
 
 ---
 
-## Bước 9 — Chạy inference
+## Bước 9 — Chạy inference (detection)
 
 ```bash
 conda activate pigbench
@@ -195,6 +195,80 @@ EOF
 ```
 
 > Server không có display nên dùng `save_path='/tmp/result.jpg'` thay vì `None`.
+
+---
+
+## Bước 10 — Chuẩn bị video và chạy tracking
+
+### 10.1 — Đặt model weights cho tracker
+
+Tracking dùng lại `codino_swin.pth` làm detector và thêm ReID model (tự download khi chạy lần đầu):
+
+```bash
+# Tạo thư mục chứa weights cho tracking
+mkdir -p tracking/data/pretrained
+
+# Symlink hoặc copy checkpoint đã có
+cp detection/data/pretrained_weights/codino_swin.pth \
+   tracking/data/pretrained/codino_swin.pth
+```
+
+### 10.2 — Đặt video đầu vào
+
+```bash
+mkdir -p tracking/data/videos
+
+# Copy video từ máy local (mp4)
+scp user@local-machine:/path/to/pigtrack0001.mp4 \
+    tracking/data/videos/pigtrack0001.mp4
+```
+
+Hoặc download video mẫu từ repo:
+```
+https://data.goettingen-research-online.de/dataset.xhtml?persistentId=doi:10.25625/P7VQTP
+```
+Giải nén lấy file `pigtrack0001.mp4`.
+
+### 10.3 — Chạy tracking (BoT-SORT)
+
+```bash
+conda activate pigbench
+cd PigBench/tracking/boxmot
+
+python main.py \
+    --config configs/botsort.yaml \
+    --inference_detector_checkpoint ../../detection/data/pretrained_weights/codino_swin.pth \
+    --seq_dir ../../tracking/data/videos \
+    --outputs_base outputs/botsort
+```
+
+**Các tracker khác** (thay `botsort.yaml`):
+
+| Config | Tracker |
+|--------|---------|
+| `configs/botsort.yaml` | BoT-SORT (khuyến nghị) |
+| `configs/bytetrack.yaml` | ByteTrack |
+| `configs/deepocsort.yaml` | DeepOC-SORT |
+| `configs/strongsort.yaml` | StrongSORT |
+
+### 10.4 — Kết quả output
+
+Kết quả lưu tại:
+```
+tracking/boxmot/outputs/botsort/inference/<tên_video>/results/
+├── tracker/          # file .txt kết quả tracking (MOT format)
+└── visualization/    # video mp4 đã vẽ bounding box + ID
+```
+
+Xem video kết quả trực tiếp trên server (không cần display):
+```bash
+# Kiểm tra file đã tạo
+ls tracking/boxmot/outputs/botsort/inference/*/results/visualization/
+
+# Tải về máy local để xem
+scp user@server:/path/to/PigBench/tracking/boxmot/outputs/botsort/inference/videos/results/visualization/pigtrack0001.mp4 \
+    ~/Downloads/pigtrack_result.mp4
+```
 
 ---
 
