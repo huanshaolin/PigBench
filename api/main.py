@@ -11,7 +11,7 @@ load_dotenv(Path(__file__).parent / ".env")
 from fastapi import FastAPI, File, UploadFile, HTTPException, Query, BackgroundTasks
 from fastapi.responses import JSONResponse
 
-from detector import load_detection_model, detect_and_annotate
+from pig_detector import load_detection_model, detect_and_annotate
 from tracker import load_tracking_detector, track_and_annotate
 from cloudinary_upload import upload_image, upload_video
 from validation import validate_image, validate_video
