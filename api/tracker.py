@@ -6,16 +6,21 @@ import cv2
 from pathlib import Path
 from typing import Tuple, Optional
 
-API_DIR      = Path(__file__).parent
-BOXMOT_DIR   = (API_DIR / "../tracking/boxmot").resolve()
+API_DIR       = Path(__file__).parent
+BOXMOT_DIR    = (API_DIR / "../tracking/boxmot").resolve()
+DETECTION_DIR = (API_DIR / "../detection").resolve()
+
 TRACKER_CONFIG   = str(BOXMOT_DIR / "configs/trackers/botsort.yaml")
 REID_WEIGHTS_DIR = str(BOXMOT_DIR / "reid_weights")
 REID_WEIGHTS     = "osnet_x1_0_msmt17.pt"
 
 TRACKING_DETECTOR_CONFIG     = str(BOXMOT_DIR / "detector/co_detr/co_dino_swin.py")
-TRACKING_DETECTOR_CHECKPOINT = str(API_DIR / "../detection/data/pretrained_weights/codino_swin.pth")
+TRACKING_DETECTOR_CHECKPOINT = str(DETECTION_DIR / "data/pretrained_weights/codino_swin.pth")
 
+# boxmot imports (utils.datasets, boxmot.*)
 sys.path.insert(0, str(BOXMOT_DIR))
+# mmengine needs detection/ to resolve 'configs.co_detr.model'
+sys.path.insert(0, str(DETECTION_DIR))
 
 # Fixed palette for track IDs
 _COLORS = (np.random.RandomState(42).rand(256, 3) * 255).astype(np.int32)

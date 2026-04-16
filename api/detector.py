@@ -6,11 +6,14 @@ import cv2
 from pathlib import Path
 from typing import Tuple
 
-API_DIR = Path(__file__).parent
-DETECTION_CONFIG     = str(API_DIR / "../detection/configs/co_detr/co_dino_swin.py")
-DETECTION_CHECKPOINT = str(API_DIR / "../detection/data/pretrained_weights/codino_swin.pth")
+API_DIR        = Path(__file__).parent
+DETECTION_DIR  = (API_DIR / "../detection").resolve()
+DETECTION_CONFIG     = str(DETECTION_DIR / "configs/co_detr/co_dino_swin.py")
+DETECTION_CHECKPOINT = str(DETECTION_DIR / "data/pretrained_weights/codino_swin.pth")
 
-sys.path.insert(0, str(API_DIR / "../detection/tools/inference"))
+# mmengine tries to import 'configs.co_detr.model' — needs detection/ on sys.path
+sys.path.insert(0, str(DETECTION_DIR))
+sys.path.insert(0, str(DETECTION_DIR / "tools/inference"))
 
 # Fixed random seed so colors are consistent between calls
 _RNG = random.Random(42)
