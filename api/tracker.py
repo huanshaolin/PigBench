@@ -14,7 +14,8 @@ TRACKER_CONFIG   = str(BOXMOT_DIR / "configs/trackers/botsort.yaml")
 REID_WEIGHTS_DIR = str(BOXMOT_DIR / "reid_weights")
 REID_WEIGHTS     = "osnet_x1_0_msmt17.pt"
 
-TRACKING_DETECTOR_CONFIG     = str(BOXMOT_DIR / "detector/co_detr/co_dino_swin.py")
+# Dùng chung config detection để tránh duplicate class registration với mmengine
+TRACKING_DETECTOR_CONFIG     = str(DETECTION_DIR / "configs/co_detr/co_dino_swin.py")
 TRACKING_DETECTOR_CHECKPOINT = str(DETECTION_DIR / "data/pretrained_weights/codino_swin.pth")
 
 # boxmot imports (utils.datasets, boxmot.*)
