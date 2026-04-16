@@ -1,9 +1,9 @@
 import cv2
 from fastapi import HTTPException
 
-MAX_IMAGE_BYTES = 5 * 1024 * 1024   # 5 MB
-MAX_VIDEO_BYTES = 20 * 1024 * 1024  # 20 MB
-MAX_VIDEO_SECONDS = 10.0
+MAX_IMAGE_BYTES = 20 * 1024 * 1024   # 5 MB
+MAX_VIDEO_BYTES = 60 * 1024 * 1024  # 20 MB
+MAX_VIDEO_SECONDS = 120.0
 
 
 def validate_image(data: bytes, filename: str = "") -> None:
