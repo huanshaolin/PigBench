@@ -4,7 +4,7 @@ import tempfile
 import time
 
 from fastapi import APIRouter, File, UploadFile, HTTPException, Query, BackgroundTasks, Depends, Request
-from utils import sanitize_filename
+from file_utils import sanitize_filename
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.database import get_db
