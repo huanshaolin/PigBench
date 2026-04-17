@@ -9,7 +9,6 @@ load_dotenv(Path(__file__).parent / ".env")
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
-from db.database import init_db
 from services.detection_service import load_detection_model
 from services.tracking_service import load_tracking_detector
 from services.queue_service import image_queue, video_queue
@@ -21,7 +20,6 @@ DEVICE = os.getenv("PIGBENCH_DEVICE", "cuda:0")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await init_db()
     print(f"[INFO] Loading models on {DEVICE}...")
     app.state.device             = DEVICE
     app.state.detector           = load_detection_model(DEVICE)

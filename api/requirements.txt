@@ -5,5 +5,7 @@ cloudinary
 python-dotenv
 sqlalchemy[asyncio]
 asyncpg
+psycopg2-binary
+alembic
 psutil
 pynvml
