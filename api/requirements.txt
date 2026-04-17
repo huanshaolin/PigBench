@@ -3,3 +3,7 @@ uvicorn[standard]
 python-multipart
 cloudinary
 python-dotenv
+sqlalchemy[asyncio]
+asyncpg
+psutil
+pynvml

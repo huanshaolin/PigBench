@@ -13,7 +13,6 @@ cloudinary.config(
 
 
 def upload_image(image_bytes: bytes, public_id: str) -> str:
-    """Upload JPEG bytes to Cloudinary, return secure URL."""
     result = cloudinary.uploader.upload(
         io.BytesIO(image_bytes),
         public_id=public_id,
@@ -25,7 +24,6 @@ def upload_image(image_bytes: bytes, public_id: str) -> str:
 
 
 def upload_video(video_path: str, public_id: str) -> str:
-    """Upload MP4 file to Cloudinary, return secure URL."""
     result = cloudinary.uploader.upload(
         video_path,
         public_id=public_id,
