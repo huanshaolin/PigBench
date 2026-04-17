@@ -2,6 +2,7 @@ import os
 import time
 
 from fastapi import APIRouter, File, UploadFile, HTTPException, Query, BackgroundTasks, Depends, Request
+from utils import sanitize_filename
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.database import get_db
@@ -44,7 +45,8 @@ async def detect_pigs(
                 request.app.state.detector, image_bytes, score_thresh
             )
             if export_file:
-                stem             = os.path.splitext(file.filename or "image")[0]
+                safe_name        = sanitize_filename(file.filename or "image.jpg")
+                stem             = os.path.splitext(safe_name)[0]
                 image_url        = upload_image(annotated_bytes, public_id=f"detect_{stem}")
                 uploaded_file_mb = round(len(annotated_bytes) / (1024 * 1024), 3)
             else:

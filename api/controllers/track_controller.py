@@ -4,6 +4,7 @@ import tempfile
 import time
 
 from fastapi import APIRouter, File, UploadFile, HTTPException, Query, BackgroundTasks, Depends, Request
+from utils import sanitize_filename
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.database import get_db
@@ -57,7 +58,8 @@ async def track_pigs(
                 min_conf=min_conf,
             )
             if export_file:
-                stem             = os.path.splitext(file.filename or "video")[0]
+                safe_name        = sanitize_filename(file.filename or "video.mp4")
+                stem             = os.path.splitext(safe_name)[0]
                 video_url        = upload_video(output_path, public_id=f"track_{stem}")
                 uploaded_file_mb = round(os.path.getsize(output_path) / (1024 * 1024), 3)
             else:
